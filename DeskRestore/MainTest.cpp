@@ -2,9 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <unordered_map>
-#include "AppState.h"
-#include "WinWrapper.h"
+#include "DesktopStateManager.h"
 
 
 
@@ -27,32 +25,13 @@ void printVector(std::vector<std::string> &v) {
 int main(int argc, char *argv[]) {
 
 
+	AppState state(NULL, "kalle", 0, 0, 0, 0, 0);
+	std::cout << state.toString() << std::endl;
 
 
-
-	std::unordered_map<HWND, int> order;
-	order = WinWrapper::GetOpenWindowsZOrder();
-
-	std::vector<HWND> openWidows;
-	WinWrapper::GetOpenWindows(&openWidows);
-
-	std::cout << openWidows.size() << std::endl;
-	std::cout << order.size() << std::endl;
-
-	
-	for each (HWND handle in openWidows)
-	{
-	
-		auto t = order.find(handle);
-
-
-		if (t!=order.end()) {
-			std::cout << WinWrapper::GetWindowTextAsString(handle) << " = " << order[handle] << std::endl;
-		}
-
-	}
-
-	std::cout << order[nullptr];
+	DesktopStateManager manager;
+	manager.makeSnapshot();
+	manager.printStates();
 
 
 
