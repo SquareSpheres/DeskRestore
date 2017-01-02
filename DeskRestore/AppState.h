@@ -6,8 +6,8 @@ class AppState
 {
 
 public:
-	AppState(HWND handle,std::string name, int width, int height, int position_x, int position_y, int z_order)
-		:hwnd(handle),appName(name), appHeight(height), appWidth(width), posX(position_x), posY(position_y), posZ(z_order) {}
+	AppState(HWND handle, std::string name, int width, int height, int position_x, int position_y, int z_order)
+		:hwnd(handle), appName(name), appHeight(height), appWidth(width), posX(position_x), posY(position_y), posZ(z_order) {}
 
 	~AppState();
 
@@ -16,12 +16,18 @@ public:
 	}
 
 	bool operator = (const AppState &other) const {
-		return posZ == other.posZ;
+		return
+			((hwnd == other.hwnd) &&
+			(appName == other.appName) &&
+			(appHeight == other.appHeight) &&
+			(appWidth == other.appWidth) &&
+			(posX == other.posX) &&
+			(posY == other.posY) &&
+			(posZ == other.posZ));
 	}
 
 
-
-	std::string toString();
+	const std::string toString();
 
 	const HWND hwnd;
 	const	std::string appName;

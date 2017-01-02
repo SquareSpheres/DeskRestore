@@ -6,7 +6,7 @@ AppState::~AppState()
 	std::cout << "Deleting appstate..." << std::endl;
 }
 
-std::string AppState::toString()
+const std::string AppState::toString()
 {
 	std::string name = appName;
 	std::string height(" appHeight " + std::to_string(appHeight));

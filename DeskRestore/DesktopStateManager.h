@@ -18,7 +18,6 @@ public:
 	void removeSnapshot(int index);
 	bool restoreLast();
 	bool restoreFirst();
-
 	void printStates();
 
 

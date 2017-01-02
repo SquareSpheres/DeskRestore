@@ -45,14 +45,15 @@ void DesktopStateManager::makeSnapshot()
 			posZ = order[handle];
 		}
 
+
 		appStates.push_back(AppState(handle, appName, appWidth, appHeight, pos.first, pos.second, posZ));
 	}
 
+	std::sort(appStates.begin(), appStates.end());
 
+	DesktopState state(appStates);
+	desktopStates->push_back(state);
 
-	// working fine untill here
-	//creting of vector goes wrong??
-	desktopStates->push_back(DesktopState(appStates));
 }
 
 void DesktopStateManager::removeSnapshot(int index)
@@ -63,19 +64,21 @@ void DesktopStateManager::removeSnapshot(int index)
 
 bool DesktopStateManager::restoreLast()
 {
+	DesktopStateManager::restoreSnapshot(desktopStates->at(desktopStates->size()-1));
 	return false;
 }
 
 bool DesktopStateManager::restoreFirst()
 {
+	DesktopStateManager::restoreSnapshot(desktopStates->at(0));
 	return false;
 }
 
 void DesktopStateManager::printStates()
 {
-	for (int i = 0; i < DesktopStateManager::desktopStates->size(); i++)
+	for (size_t i = 0; i < DesktopStateManager::desktopStates->size(); i++)
 	{
-		std::cout << DesktopStateManager::desktopStates->size();
-		std::cout << DesktopStateManager::desktopStates->at(i).toString() << std::endl;
+		std::cout << "Number of DeskStates = " << DesktopStateManager::desktopStates->size() << std::endl;
+		desktopStates->at(i).printState();
 	}
 }

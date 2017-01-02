@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include <iostream>
 
 
 class DesktopState
@@ -11,28 +12,20 @@ class DesktopState
 
 public:
 
-	std::vector<AppState> * appStates;
+	const std::vector<AppState> deskState;
+
+	DesktopState(const std::vector<AppState> & appStates) :
+		deskState(appStates) {}
 
 
-	DesktopState(std::vector<AppState> * states) :
-		appStates(new std::vector<AppState>(*states)) {
-
-		std::sort(appStates->begin(), appStates->end());
+	// WHY DO I NEED THIS??
+	bool operator = (const DesktopState & otherState) const {
+		return 0;
 	}
 
-	DesktopState(std::vector<AppState> & states) :
-		appStates(new std::vector<AppState>(states)) {
-
-		std::sort(appStates->begin(), appStates->end());
-	}
-
-	
 	~DesktopState();
 
+	void printState();
 
-
-	std::string toString();
-
-	
 };
 

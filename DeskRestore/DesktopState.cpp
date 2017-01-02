@@ -1,25 +1,23 @@
 #include "DesktopState.h"
-#include <iostream>
-
-
-
 
 
 
 DesktopState::~DesktopState()
 {
-	delete DesktopState::appStates;
-	std::cout << "Deleting vector of appStates..." << std::endl;
+
 }
 
-std::string DesktopState::toString()
+void DesktopState::printState()
 {
-	std::string desktopStateString;
-	for (int i = 0; i < DesktopState::appStates->size(); i++)
+
+
+	std::cout << "============STATE START===============" << std::endl;
+	for (size_t i = 0; i < DesktopState::deskState.size(); i++)
 	{
-		desktopStateString += (DesktopState::appStates->at(i).toString() +"\n");
+		AppState tmp(DesktopState::deskState[i]);
+		std::cout << tmp.toString() << std::endl;
 	}
-	return desktopStateString;
+	std::cout << "============STATE END=================" << std::endl;
 }
 
 
