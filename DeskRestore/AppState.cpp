@@ -1,10 +1,7 @@
 #include "AppState.h"
 #include <iostream>
 
-AppState::~AppState()
-{
-	std::cout << "Deleting appstate..." << std::endl;
-}
+AppState::~AppState() {}
 
 const std::string AppState::toString()
 {

@@ -25,6 +25,7 @@ void printVector(std::vector<std::string> &v) {
 
 int main(int argc, char *argv[]) {
 
+
 	DesktopStateManager manager;
 	
 	while (TRUE) {
@@ -40,8 +41,10 @@ int main(int argc, char *argv[]) {
 			manager.printStates();
 			break;
 		case '2':
+			manager.restoreFirst();
 			break;
 		case '3':
+			manager.restoreLast();
 			break;
 		default:
 			break;

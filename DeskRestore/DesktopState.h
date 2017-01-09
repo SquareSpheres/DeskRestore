@@ -12,10 +12,10 @@ class DesktopState
 
 public:
 
-	const std::vector<AppState> deskState;
+	const std::vector<AppState> appStates;
 
 	DesktopState(const std::vector<AppState> & appStates) :
-		deskState(appStates) {}
+		appStates(appStates) {}
 
 
 	// WHY DO I NEED THIS??

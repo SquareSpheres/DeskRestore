@@ -15,6 +15,10 @@ public:
 		return posZ < other.posZ;
 	}
 
+	bool operator > (const AppState &other) const {
+		return posZ > other.posZ;
+	}
+
 	bool operator = (const AppState &other) const {
 		return
 			((hwnd == other.hwnd) &&

@@ -2,13 +2,39 @@
 #include "DesktopState.h"
 #include "WinWrapper.h"
 #include <iostream>
+#include <functional>
 
 
 
 
 
-bool DesktopStateManager::restoreSnapshot(DesktopState & snapshoot)
+bool DesktopStateManager::restoreSnapshot(const DesktopState & snapshoot)
 {
+
+
+	//START WITH HIGHEST Z-ORDER ITEM
+	HWND next = HWND_BOTTOM;
+
+	for (std::vector<int>::size_type i = snapshoot.appStates.size() - 1;
+		i != (std::vector<int>::size_type) - 1; i--) {
+
+		AppState state = snapshoot.appStates[i];
+		std::cout << "next state = " << state.toString() << std::endl;
+
+		SetWindowPos(
+			state.hwnd,
+			next,
+			state.posX,
+			state.posY,
+			state.appWidth,
+			state.appHeight,
+			SWP_NOACTIVATE
+		);
+
+
+		next = state.hwnd;
+	}
+
 	return false;
 }
 
@@ -64,7 +90,7 @@ void DesktopStateManager::removeSnapshot(int index)
 
 bool DesktopStateManager::restoreLast()
 {
-	DesktopStateManager::restoreSnapshot(desktopStates->at(desktopStates->size()-1));
+	DesktopStateManager::restoreSnapshot(desktopStates->at(desktopStates->size() - 1));
 	return false;
 }
 
@@ -76,9 +102,11 @@ bool DesktopStateManager::restoreFirst()
 
 void DesktopStateManager::printStates()
 {
+
 	for (size_t i = 0; i < DesktopStateManager::desktopStates->size(); i++)
 	{
 		std::cout << "Number of DeskStates = " << DesktopStateManager::desktopStates->size() << std::endl;
 		desktopStates->at(i).printState();
 	}
 }
+

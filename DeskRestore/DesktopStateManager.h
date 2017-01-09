@@ -6,7 +6,7 @@ class DesktopStateManager
 
 private:
 	std::vector<DesktopState> * const desktopStates;
-	bool restoreSnapshot(DesktopState & snapshoot);
+	bool restoreSnapshot(const DesktopState & snapshoot);
 
 public:
 	DesktopStateManager() :
