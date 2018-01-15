@@ -1,112 +1,37 @@
 #include "DesktopStateManager.h"
 #include "DesktopState.h"
-#include "WinWrapper.h"
-#include <iostream>
-#include <functional>
+#include "winutils.h"
 
 
-
-
-
-bool DesktopStateManager::restoreSnapshot(const DesktopState & snapshoot)
+bool deskrestore::RestoreDesktopState(DesktopState& deskState)
 {
+	HWND next = HWND_TOPMOST;
+	bool operationSuccess = true;
 
+	for (const auto& state : deskState.appStates)
+	{
+		if (!IsIconic(state.hwnd) && state.isIconic)
+		{
+			ShowWindow(state.hwnd, SW_SHOWMINIMIZED);
+		}
+		else if (!state.isIconic)
+		{
+			ShowWindow(state.hwnd, SW_RESTORE);
 
-	//START WITH HIGHEST Z-ORDER ITEM
-	HWND next = HWND_BOTTOM;
-
-	for (std::vector<int>::size_type i = snapshoot.appStates.size() - 1;
-		i != (std::vector<int>::size_type) - 1; i--) {
-
-		AppState state = snapshoot.appStates[i];
-		std::cout << "next state = " << state.toString() << std::endl;
-
-		SetWindowPos(
-			state.hwnd,
-			next,
-			state.posX,
-			state.posY,
-			state.appWidth,
-			state.appHeight,
-			SWP_NOACTIVATE
-		);
-
+			if (SetWindowPos(
+				state.hwnd,
+				next,
+				state.posX,
+				state.posY,
+				state.appWidth,
+				state.appHeight,
+				SWP_NOACTIVATE
+			))operationSuccess = false;
+		}
 
 		next = state.hwnd;
 	}
 
-	return false;
-}
-
-
-
-DesktopStateManager::~DesktopStateManager()
-{
-	delete DesktopStateManager::desktopStates;
-	std::cout << "Deleting vector of desktopStates..." << std::endl;
-}
-
-void DesktopStateManager::makeSnapshot()
-{
-	std::vector<HWND> handles;
-	std::vector<AppState> appStates;
-	WinWrapper::GetOpenWindows(&handles);
-
-	std::unordered_map<HWND, int> order;
-	order = WinWrapper::GetOpenWindowsZOrder();
-
-
-
-
-	for (HWND handle : handles)
-	{
-
-		std::string appName = WinWrapper::GetWindowTextAsString(handle);
-		int appHeight = WinWrapper::GetWindowHeight(handle);
-		int appWidth = WinWrapper::GetWindowWidth(handle);
-		std::pair<int, int> pos = WinWrapper::GetWindowPos(handle);
-		int posZ = INT_MAX;
-
-		if (order.find(handle) != order.end()) {
-			posZ = order[handle];
-		}
-
-
-		appStates.push_back(AppState(handle, appName, appWidth, appHeight, pos.first, pos.second, posZ));
-	}
-
-	std::sort(appStates.begin(), appStates.end());
-
-	DesktopState state(appStates);
-	desktopStates->push_back(state);
-
-}
-
-void DesktopStateManager::removeSnapshot(int index)
-{
-	DesktopStateManager::desktopStates->erase(DesktopStateManager::desktopStates->begin() + index);
-}
-
-
-bool DesktopStateManager::restoreLast()
-{
-	DesktopStateManager::restoreSnapshot(desktopStates->at(desktopStates->size() - 1));
-	return false;
-}
-
-bool DesktopStateManager::restoreFirst()
-{
-	DesktopStateManager::restoreSnapshot(desktopStates->at(0));
-	return false;
-}
-
-void DesktopStateManager::printStates()
-{
-
-	for (size_t i = 0; i < DesktopStateManager::desktopStates->size(); i++)
-	{
-		std::cout << "Number of DeskStates = " << DesktopStateManager::desktopStates->size() << std::endl;
-		desktopStates->at(i).printState();
-	}
+	return operationSuccess;
 }
 

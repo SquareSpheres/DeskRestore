@@ -2,30 +2,43 @@
 #include "AppState.h"
 #include <string>
 #include <vector>
-#include <algorithm>
-#include <queue>
-#include <iostream>
+#include <chrono>
+
+namespace deskrestore {
+
+	/**
+	 * \brief Creates a list of AppStates of currently open and active applications
+	 * \return vector of AppStates
+	 */
+	std::vector<AppState> CreateAppStates();
+
+	/**
+	 *
+	 * \brief Gets a timestamp as string
+	 * \param timeStamp The time stamp
+	 * \return String representation of timestamp
+	 */
+	std::string GetTimeStampAsString(const std::chrono::system_clock::time_point timeStamp);
 
 
-class DesktopState
-{
+	/**
+	 * \brief DesktopState struct represents a state of the desktop at a specific time. The struct is immutable.
+	 */
+	struct DesktopState
+	{
+		DesktopState();
 
-public:
+		DesktopState(const DesktopState& desktopState) = default;
+		DesktopState& operator =(const DesktopState &other) = delete;
 
-	const std::vector<AppState> appStates;
+		DesktopState(const DesktopState &&other) = delete;
+		DesktopState& operator =(const DesktopState &&other) = delete;
 
-	DesktopState(const std::vector<AppState> & appStates) :
-		appStates(appStates) {}
+		DesktopState(std::vector<AppState> appStates);
+		~DesktopState();
 
+		const std::chrono::system_clock::time_point timeStamp;
+		const std::vector<AppState> appStates;
 
-	// WHY DO I NEED THIS??
-	bool operator = (const DesktopState & otherState) const {
-		return 0;
-	}
-
-	~DesktopState();
-
-	void printState();
-
-};
-
+	};
+}

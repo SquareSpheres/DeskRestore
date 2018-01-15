@@ -1,25 +1,15 @@
 #pragma once
 #include "DesktopState.h"
-class DesktopStateManager
+
+namespace deskrestore
 {
 
+	/**
+	 * \brief Restore desktop to a given DesktopState
+	 * \param deskState Desktop state to restore
+	 * \note use GetLastError to check last error
+	 * \return true if state was successfully restored, false otherwise
+	 */
+	bool RestoreDesktopState(DesktopState &deskState);
 
-private:
-	std::vector<DesktopState> * const desktopStates;
-	bool restoreSnapshot(const DesktopState & snapshoot);
-
-public:
-	DesktopStateManager() :
-		desktopStates(new std::vector<DesktopState>()) {}
-
-	~DesktopStateManager();
-
-	void makeSnapshot();
-	void removeSnapshot(int index);
-	bool restoreLast();
-	bool restoreFirst();
-	void printStates();
-
-
-};
-
+}

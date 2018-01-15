@@ -1,46 +1,45 @@
 #pragma once
 #include <string>
+#include <utility>
 #include <Windows.h>
 
-class AppState
+
+namespace deskrestore
 {
 
-public:
-	AppState(HWND handle, std::string name, int width, int height, int position_x, int position_y, int z_order)
-		:hwnd(handle), appName(name), appHeight(height), appWidth(width), posX(position_x), posY(position_y), posZ(z_order) {}
+	/**
+	 * \brief AppState struct represents a state of an application. The struct is immutable.
+	 */
+	struct AppState
+	{
+		AppState(HWND handle, bool isIconic, std::string name, const int width, const int height, const int positionX, const int positionY,
+			const int zOrder);
 
-	~AppState();
+		AppState(const AppState &other) = default;
+		AppState& operator =(const AppState &other) = delete;
 
-	bool operator < (const AppState &other) const {
-		return posZ < other.posZ;
-	}
+		AppState(const AppState &&other) = delete;
+		AppState& operator =(const AppState &&other) = delete;
 
-	bool operator > (const AppState &other) const {
-		return posZ > other.posZ;
-	}
-
-	bool operator = (const AppState &other) const {
-		return
-			((hwnd == other.hwnd) &&
-			(appName == other.appName) &&
-			(appHeight == other.appHeight) &&
-			(appWidth == other.appWidth) &&
-			(posX == other.posX) &&
-			(posY == other.posY) &&
-			(posZ == other.posZ));
-	}
+		~AppState();
 
 
-	const std::string toString();
+		bool operator <(const AppState& other) const;
 
-	const HWND hwnd;
-	const	std::string appName;
-	const	int appHeight;
-	const	int appWidth;
-	const	int posX;
-	const	int posY;
-	const	int posZ;
-};
+		bool operator >(const AppState& other) const;
 
+		bool operator ==(const AppState& other) const;
 
+		friend std::ostream& operator<<(std::ostream& os, const AppState& appState);
+
+		const HWND hwnd;
+		const bool isIconic;
+		const	std::string appName;
+		const	int appHeight;
+		const	int appWidth;
+		const	int posX;
+		const	int posY;
+		const	int posZ;
+	};
+}
 

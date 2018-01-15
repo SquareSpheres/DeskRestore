@@ -1,65 +1,35 @@
 #include <iostream>
 #include <string>
-#include <vector>
 #include <iostream>
 #include "DesktopStateManager.h"
-#include <conio.h>
+#include <unordered_map>
 
-
-
-void foo(std::string * strings, int length) {
-	for (int i = 0; i < length; i++)
-	{
-		std::cout << strings[i] << std::endl;
-	}
-}
-
-
-void printVector(std::vector<std::string> &v) {
-	for (size_t i = 0; i < v.size(); i++)
-	{
-		std::cout << v[i] << std::endl;
-	}
-
-}
 
 int main(int argc, char *argv[]) {
 
 
-	DesktopStateManager manager;
-	
-	while (TRUE) {
-		char c;
-		std::cout << "input : ";
-		c = _getch();
+	using namespace deskrestore;
 
+	int input = 1;
+	DesktopState * desktop = nullptr;
 
-		switch (c)
+	while(input!=0)
+	{
+		std::cin >> input;
+
+		switch (input)
 		{
-		case '1':
-			manager.makeSnapshot();
-			manager.printStates();
+		case 1:
+			delete desktop;
+			desktop = new DesktopState;
 			break;
-		case '2':
-			manager.restoreFirst();
-			break;
-		case '3':
-			manager.restoreLast();
+		case 2:
+			RestoreDesktopState(*desktop);
 			break;
 		default:
 			break;
 		}
 	}
-
-
-	
-	
-
-
-
-
-	int wait;
-	std::cin >> wait;
 }
 
 
